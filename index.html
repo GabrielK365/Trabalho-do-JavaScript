@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .divCaixa {
+            background-color: black;
+            width: 100px;
+            height: 100px;
+            border: 2px solid white;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            margin: 5px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="campo1" class="divCaixa" onclick="marcarCampo(this, 1)"></div>
+        <div id="campo2" class="divCaixa" onclick="marcarCampo(this, 2)"></div>
+        <div id="campo3" class="divCaixa" onclick="marcarCampo(this, 3)"></div>
+        <br>
+        <div id="campo4" class="divCaixa" onclick="marcarCampo(this, 4)"></div>
+        <div id="campo5" class="divCaixa" onclick="marcarCampo(this, 5)"></div>
+        <div id="campo6" class="divCaixa" onclick="marcarCampo(this, 6)"></div>
+        <br>
+        <div id="campo7" class="divCaixa" onclick="marcarCampo(this, 7)"></div>
+        <div id="campo8" class="divCaixa" onclick="marcarCampo(this, 8)"></div>
+        <div id="campo9" class="divCaixa" onclick="marcarCampo(this, 9)"></div>
+    </div>
+
+    <div id="resultado"></div>
+
+    <script>
+        var jogadorAtual = 'X';
+        var tabuleiro = ["", "", "", "", "", "", "", "", ""];
+        var jogoAtivo = true;
+
+        function marcarCampo(divCaixa, index) {
+            if (divCaixa.textContent === "" && jogoAtivo) {
+                divCaixa.textContent = jogadorAtual;
+                tabuleiro[index - 1] = jogadorAtual;
+                verificarResultado();
+                jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function verificarResultado() {
+            const combinacoesVencedoras = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (const combinacao of combinacoesVencedoras) {
+                const [a, b, c] = combinacao;
+                if (tabuleiro[a] && tabuleiro[a] === tabuleiro[b] && tabuleiro[a] === tabuleiro[c]) {
+                    jogoAtivo = false;
+                    document.getElementById('resultado').textContent = `Jogador ${tabuleiro[a]} venceu!`;
+                    return;
+                }
+            }
+
+            if (!tabuleiro.includes("")) {
+                jogoAtivo = false;
+                document.getElementById('resultado').textContent = "Empate!";
+            }
+        }
+    </script>
+</body>
+</html>
